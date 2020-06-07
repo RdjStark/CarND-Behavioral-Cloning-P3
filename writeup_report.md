@@ -73,8 +73,6 @@ My strategy was not building a model from scratch but to find a model that is ap
 
 First my model was overfitting. To reduce overfitting, I placed a dropout layer between the dense layers. Also collecting more data, augmenting it by flipping and splitting the data 20% - 80% between training and validating data helped a lot.
 
-A problem raised when I started to use left and right camera images. Because of the badly aligned left, right measurement multipliers, even with triple data, my model's training and validation losses were three times bigger than using data just from center camera and the car was waddling slowly and finally left the road. 
-
 There were no activation functions in the dense layers of the base architecture, so it put them there to improvde nonlinearity.  
 
 First using my model in simulator caused the car wander off the road in these scenarios:
@@ -128,6 +126,8 @@ I then preprocessed this data by flipping it on the y axis, so the final number 
 40490. It was shuffled on the begining of each process, and data was split 20/80 between validation and training set.
 
 I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 8, because validation loss started to flat out at this point, as seen below:
+
+I also turned on side camera detection, it multiplied the amount of source data triple times.
 
 <pre>
 Epoch 1 254/254 55s 216ms/step - loss: 0.0205 - val_loss: 0.0140
