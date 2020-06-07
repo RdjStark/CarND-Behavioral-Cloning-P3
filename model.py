@@ -25,13 +25,11 @@ train_lines, valid_lines = train_test_split(lines, test_size = 0.2)
 batch_size = 64
 
 # Set number of the consecutive and related training runs
-epoch_number = 10
+epoch_number = 8
 
 # Define a generator that process images in pieces instead of 
 # reading the whole data It uses much less memory then the bulk process. 
 # 
-# Note: side camera correction was tried, but now it is turned off
-# because the results were unacceptable
 def sample_generator(lines, batch_size=64, side_camera_correction=0.15):    
     num_lines = len(lines)
     while 1:       
@@ -59,10 +57,7 @@ def sample_generator(lines, batch_size=64, side_camera_correction=0.15):
                     
                     # Augment (double) the data with flipping on the y axis. 
                     images.append(cv2.flip(center_image,1))
-                    measurements.append(-1.0 * np.float(item[3])) 
-                    
-                    # Note: side camera correction was tried, but now it is turned off
-                    # because the results were unacceptable
+                    measurements.append(-1.0 * np.float(item[3]))                                         
                     
                     left_image_name = 'data/IMG/' + item[1].split('/')[-1]
                     left_image = cv2.imread(left_image_name)   
