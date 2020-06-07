@@ -42,6 +42,7 @@ python drive.py model.h5 lapfolder
 #### 3. Submission code is usable and readable
 model.py is the submission code. It contains codes for reading and preprocessing data, defining the deep learning architecture and  training it. The code is well commented and works. 
 
+---
 ### Model Architecture and Training Strategy
 
 #### 1. An appropriate model architecture has been employed
@@ -62,6 +63,7 @@ I was using Adam Optimizer, so model parameters were not set explicity.
 
 Training data were created mixing my driving data and the preinstalled data on the workspace. My data are focusing mainly on recovering and the tricky parts.
 
+---
 ### Model Architecture and Training Strategy
 
 #### 1. Solution Design Approach
@@ -102,8 +104,6 @@ Here is a visualization of the architecture
 |Activation function|RELU|
 |Fully connected|Outputs 1|
 
-
-
 #### 3. Creation of the Training Set & Training Process
 
 To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
@@ -125,9 +125,21 @@ To augment the data sat, I also flipped images and angles thinking that this wou
 
 Etc ....
 
-After the collection process, I had X number of data points. I then preprocessed this data by ...
+After the collection process, I had 20245 center images: 8036 from the preinstalled set and 12209 from my drivings. 
+I then preprocessed this data by flipping it on the y axis, so the final number is 
+40490. It was shuffled on the begining of each process, and data was split 20/80 between validation and training set.
 
+I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 8, because validation loss started to flat out at this point, as seen below:
 
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
+<pre>
+Epoch 1 254/254 55s 216ms/step - loss: 0.0205 - val_loss: 0.0140
+Epoch 2 254/254 52s 205ms/step - loss: 0.0123 - val_loss: 0.0127
+Epoch 3 254/254 51s 202ms/step - loss: 0.0105 - val_loss: 0.0109
+Epoch 4 254/254 52s 206ms/step - loss: 0.0095 - val_loss: 0.0111
+Epoch 5 254/254 51s 201ms/step - loss: 0.0087 - val_loss: 0.0098
+Epoch 6 254/254 52s 206ms/step - loss: 0.0081 - val_loss: 0.0096
+Epoch 7 254/254 52s 205ms/step - loss: 0.0075 - val_loss: 0.0092
+Epoch 8 254/254 52s 204ms/step - loss: 0.0068 - val_loss: 0.0092
+</pre>
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+I set batch size 64, set epoch number to 8 and used an adam optimizer so that manually training the learning rate wasn't necessary.
