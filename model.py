@@ -12,7 +12,7 @@ from sklearn.model_selection import train_test_split
 
 # Read the file containing links to camera photos and measured data
 lines = []
-with open('/home/workspace/driving_data/driving_log.csv') as csvfile:
+with open('data/driving_log.csv') as csvfile:
     reader = csv.reader(csvfile)
     for line in reader:
         lines.append(line)
@@ -25,14 +25,14 @@ train_lines, valid_lines = train_test_split(lines, test_size = 0.2)
 batch_size = 64
 
 # Set number of the consecutive and related training runs
-epoch_number = 8
+epoch_number = 10
 
 # Define a generator that process images in pieces instead of 
 # reading the whole data It uses much less memory then the bulk process. 
 # 
 # Note: side camera correction was tried, but now it is turned off
 # because the results were unacceptable
-def sample_generator(lines, batch_size=64, side_camera_correction=0.3):    
+def sample_generator(lines, batch_size=64, side_camera_correction=0.15):    
     num_lines = len(lines)
     while 1:       
         
@@ -50,7 +50,7 @@ def sample_generator(lines, batch_size=64, side_camera_correction=0.3):
             for item in sample:   
                 try:
                     # Read a center camera image
-                    center_image_name = '/home/workspace/driving_data/IMG/' + item[0].split('/')[-1]
+                    center_image_name = 'data/IMG/' + item[0].split('/')[-1]
                     center_image = cv2.imread(center_image_name)   
                     
                     # Save the X (center camera image) and y (measurement to be compared to) being processed
@@ -60,24 +60,24 @@ def sample_generator(lines, batch_size=64, side_camera_correction=0.3):
                     # Augment (double) the data with flipping on the y axis. 
                     images.append(cv2.flip(center_image,1))
                     measurements.append(-1.0 * np.float(item[3])) 
-                    """
+                    
                     # Note: side camera correction was tried, but now it is turned off
                     # because the results were unacceptable
                     
-                    left_image_name = '/home/workspace/driving_data/IMG/' + item[1].split('/')[-1]
+                    left_image_name = 'data/IMG/' + item[1].split('/')[-1]
                     left_image = cv2.imread(left_image_name)   
                     images.append(left_image)                    
                     measurements.append(np.float(item[3]) + side_camera_correction)  
                     images.append(cv2.flip(left_image,1))
                     measurements.append(-1.0 * (np.float(item[3]) + side_camera_correction)) 
 
-                    right_image_name = '/home/workspace/driving_data/IMG/' + item[2].split('/')[-1]
+                    right_image_name = 'data/IMG/' + item[2].split('/')[-1]
                     right_image = cv2.imread(right_image_name)   
                     images.append(right_image)
                     measurements.append(np.float(item[3]) - side_camera_correction)                
                     images.append(cv2.flip(right_image,1))
                     measurements.append(-1.0 * (np.float(item[3]) - side_camera_correction)) 
-                    """
+                    
 
                 except:
                     print("Warning: item=(" + item +")")
