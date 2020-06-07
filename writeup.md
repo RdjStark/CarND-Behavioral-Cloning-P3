@@ -66,18 +66,18 @@ Training data were created mixing my driving data and the preinstalled data on t
 
 #### 1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to ...
+My strategy was not building a model from stratch but to find a model that appropriate for this purpose. I chose LeNet-5 because CNNs are good for image recognition.
 
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
+First my model was overfitting. To reduce overfitting is placed a dropout layer between the dense layers. Also collecting more data, augmenting it by flipping and splitting the data 20% - 80% between training and validating data helped a lot.
 
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
+A problem raised when i started to use left and right camera images. Because of the badly aligned left, right measurement multipliers, even with triple data, my model training loss and validations loss were three times bigger than using data just from center camera and the car was waddling slowly and left the road at the begining. 
 
-To combat the overfitting, I modified the model so that ...
+There were no activation functions in the dense layers, so it put them there to improvde nonlinearity.  
 
-Then I ... 
-
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
-
+First using my model in simulator caused the car wander off the road in these scenarios:
+  * Car slowly moved left to right to the side on straigth roads. Data were appended showing my model how to recover from it
+  * After the bridge, there is a brown dirt to the right. Model had to train not tp leave the road here with numerous recovery records.
+  
 At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
 
 #### 2. Final Model Architecture
