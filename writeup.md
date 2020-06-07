@@ -12,13 +12,12 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/placeholder.png "Model Visualization"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
+[center1]: ./writeup_images/center1.jpg "Drive in the center 1"
+[center2]: ./writeup_images/center2.jpg "Drive in the center 2"
+[recovery1]: ./writeup_images/recovery1.jpg "Recovery - dirt 1"
+[recovery2]: ./writeup_images/recovery2.jpg "Recovery - dirt 2"
+[recovery3]: ./writeup_images/recovery3.jpg "Recovery - line 1"
+[recovery4]: ./writeup_images/recovery4.jpg "Recovery - line 2"
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -106,24 +105,22 @@ Here is a visualization of the architecture
 
 #### 3. Creation of the Training Set & Training Process
 
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
+I used a mix of previous recorded images and my own driving behaviour, I recorder two laps myself paying attention to drive in the center. Here are some examples: 
+![alt text][center1]
+![alt text][center2]
 
-![alt text][image2]
+Then I recorder recovery maneuvers. 
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
+For eaxample, pulling back from the side...
 
-![alt text][image3]
-![alt text][image4]
-![alt text][image5]
+![alt text][recovery1]
+![alt text][recovery2]
 
-Then I repeated this process on track two in order to get more data points.
+...or turning back before going off-road
 
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
+![alt text][recovery3]
+![alt text][recovery4]
 
-![alt text][image6]
-![alt text][image7]
-
-Etc ....
 
 After the collection process, I had 20245 center images: 8036 from the preinstalled set and 12209 from my drivings. 
 I then preprocessed this data by flipping it on the y axis, so the final number is 
