@@ -124,7 +124,7 @@ model.add(Convolution2D(8,5,5,activation="relu"))
 # A maximum pooling layer
 model.add(MaxPooling2D())
 
-# A convolution layer with 5*5 filter. Output depth is 5
+# A convolution layer with 5*5 filter. Output depth is 6
 model.add(Convolution2D(6,5,5,activation="relu"))
 
 # A maximum pooling layer used against overfitting
