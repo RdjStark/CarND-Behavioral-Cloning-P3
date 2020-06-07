@@ -105,18 +105,19 @@ Here is a visualization of the architecture
 
 #### 3. Creation of the Training Set & Training Process
 
-I used a mix of previous recorded images and my own driving behaviour, I recorder two laps myself paying attention to drive in the center. Here are some examples: 
+I used a mix of previous recorded images and my own driving behaviour, I recorder two laps myself paying attention to drive in the center. <br/> 
+Here are some examples:<br/>
 ![alt text][center1]
 ![alt text][center2]
 
 Then I recorder recovery maneuvers. 
 
-For eaxample, pulling back from the side...
+For eaxample, turning back before going off-road...
 
 ![alt text][recovery1]
 ![alt text][recovery2]
 
-...or turning back before going off-road
+...or pulling back from the side
 
 ![alt text][recovery3]
 ![alt text][recovery4]
