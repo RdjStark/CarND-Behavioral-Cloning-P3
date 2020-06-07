@@ -56,13 +56,11 @@ The driving data used for training is splitted into two parts in code line #22. 
 
 #### 3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+I was using Adam Optimizer, so model parameters were not set explicity.
 
 #### 4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
-
-For details about how I created the training data, see the next section. 
+Training data were created mixing my driving data and the preinstalled data on the workspace. My data are focusing mainly on recovering and the tricky parts.
 
 ### Model Architecture and Training Strategy
 
@@ -86,9 +84,25 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
 
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
+Here is a visualization of the architecture 
 
-![alt text][image1]
+|Layer|Description|
+|:---:|:---------:|
+|Input|320x65x3 RGB image|
+|Convolution|1x1 stride, valid padding, Outputs 5x5x8|
+|Activation function|RELU|
+|Max pooling|2x2stride valid padding|
+|Convolution|1x1 stride, valid padding, Outputs 5x5x6|
+|Activation function|RELU|
+|Max pooling|2x2stride valid padding|
+|Fully connected|Outputs 120|
+|Activation function|RELU|
+|Drop out|20%|
+|Fully connected|Outputs 84|
+|Activation function|RELU|
+|Fully connected|Outputs 1|
+
+
 
 #### 3. Creation of the Training Set & Training Process
 
