@@ -79,6 +79,8 @@ First using my model in simulator caused the car wander off the road in these sc
   * Car slowly moved to the side of the road. Data were appended showing my model how to recover from it
   * After the bridge, there is a brown dirt to the right. Model had to train not to leave the road here with numerous recovery records.
   
+I found that LeNet-5 is not enough for this purpose, so I used a more complex network with five convoltion layers
+
 At the end of the process, the vehicle was able to drive autonomously around the track without leaving the road.
 
 #### 2. Final Model Architecture
@@ -88,17 +90,20 @@ A table shown below describes my final architecture
 |Layer|Description|
 |:---:|:---------:|
 |Input|320x65x3 RGB image|
-|Convolution|1x1 stride, valid padding, outputs 5x5x8|
+|Convolution|2x2 stride, valid padding, outputs 5x5x24|
 |Activation function|RELU|
-|Max pooling|2x2 stride, valid padding|
-|Convolution|1x1 stride, valid padding, outputs 5x5x6|
+|Convolution|2x2 stride, valid padding, outputs 5x5x36|
 |Activation function|RELU|
-|Max pooling|2x2 stride, valid padding|
-|Fully connected|outputs 120|
+|Convolution|2x2 stride, valid padding, outputs 5x5x48|
+|Activation function|RELU|
+|Convolution|1x1 stride, valid padding, outputs 3x3x64|
+|Activation function|RELU|
+|Convolution|1x1 stride, valid padding, outputs 3x3x64|
 |Activation function|RELU|
 |Dropout|20%|
-|Fully connected|outputs 84|
-|Activation function|RELU|
+|Fully connected|outputs 100|
+|Fully connected|outputs 64|
+|Fully connected|outputs 16|
 |Fully connected|outputs 1|
 
 #### 3. Creation of the Training Set & Training Process
@@ -129,15 +134,4 @@ I used this training data for training the model. The validation set helped dete
 
 I also turned on side camera detection, it multiplied the amount of source data triple times.
 
-<pre>
-Epoch 1 254/254 55s 216ms/step - loss: 0.0205 - val_loss: 0.0140
-Epoch 2 254/254 52s 205ms/step - loss: 0.0123 - val_loss: 0.0127
-Epoch 3 254/254 51s 202ms/step - loss: 0.0105 - val_loss: 0.0109
-Epoch 4 254/254 52s 206ms/step - loss: 0.0095 - val_loss: 0.0111
-Epoch 5 254/254 51s 201ms/step - loss: 0.0087 - val_loss: 0.0098
-Epoch 6 254/254 52s 206ms/step - loss: 0.0081 - val_loss: 0.0096
-Epoch 7 254/254 52s 205ms/step - loss: 0.0075 - val_loss: 0.0092
-Epoch 8 254/254 52s 204ms/step - loss: 0.0068 - val_loss: 0.0092
-</pre>
-
-I set batch size to 64, set epoch number to 8 and used an Adam Optimizer, so that manually training the learning rate wasn't necessary.
+I set batch size to 64, set epoch number to 5 and used an Adam Optimizer, so that manually training the learning rate wasn't necessary.
