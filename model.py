@@ -25,7 +25,7 @@ train_lines, valid_lines = train_test_split(lines, test_size = 0.2)
 batch_size = 64
 
 # Set number of the consecutive and related training runs
-epoch_number = 8
+epoch_number = 6
 
 # Define a generator that process images in pieces instead of 
 # reading the whole data It uses much less memory then the bulk process. 
@@ -57,8 +57,8 @@ def sample_generator(lines, batch_size=64, side_camera_correction=0.15):
                     
                     # Augment (double) the data with flipping on the y axis. 
                     images.append(cv2.flip(center_image,1))
-                    measurements.append(-1.0 * np.float(item[3]))                                         
-                    
+                    measurements.append(-1.0 * np.float(item[3])) 
+                                        
                     left_image_name = 'data/IMG/' + item[1].split('/')[-1]
                     left_image = cv2.imread(left_image_name)   
                     images.append(left_image)                    
@@ -89,17 +89,20 @@ valid_generator = sample_generator(valid_lines, batch_size = batch_size)
 # A LeNet-5 architecture was built:                    #
 #                                                      #
 # Input:            320x65x3                           #
-# Convolution:      5x5x8                              #
+# Convolution:      5x5x24 stride 2,2                  #
 # RELU                                                 #
-# Maximum Pooling   2x2 valid padding                  #
-# Convolution:      5x5x6                              #
+# Convolution:      5x5x36 stride 2,2                  #
 # RELU                                                 #
-# Maximum Pooling   2x2 valid padding                  #
-# Fully connected   outputs 120                        #
+# Convolution:      5x5x48 stride 2,2                  #
+# RELU                                                 #
+# Convolution:      3x3x64 stride 1,1                  #
+# RELU                                                 #
+# Convolution:      3x3x64 stride 1,1                  #
 # RELU                                                 #
 # Dropout           20%                                #
-# Fully connected   outputs 84                         #
-# RELU                                                 #
+# Fully connected   outputs 100                        #
+# Fully connected   outputs 64                         #
+# Fully connected   outputs 16                         #
 # Fully connected   outputs 1                          #
 ########################################################
 
@@ -111,43 +114,35 @@ model.add(Lambda(lambda x: (x/255.0) -0.5, input_shape=(160,320,3)))
 # The upper and lower parts of each image are rather confusing than useful. 
 # These parts were cropped
 model.add(Cropping2D(cropping=((70,25),(0,0))))
-
-# A convolution layer with 5*5 filter. Output depth is 8. Activation function is a rectifier
-# linear unit
-model.add(Convolution2D(8,5,5,activation="relu"))
-
-# A maximum pooling layer
-model.add(MaxPooling2D())
-
-# A convolution layer with 5*5 filter. Output depth is 6
-model.add(Convolution2D(6,5,5,activation="relu"))
-
-# A maximum pooling layer used against overfitting
-model.add(MaxPooling2D())
-
-# Reshape to 1 dimension
+# A convolution layer with 5*5 filter, stride is 2,2 Output depth is 24
+model.add(Convolution2D(24,5,5, subsample=(2,2), activation='relu'))
+# A convolution layer with 5*5 filter, stride is 2,2 Output depth is 36
+model.add(Convolution2D(36,5,5, subsample=(2,2), activation='relu'))
+# A convolution layer with 5*5 filter, stride is 2,2 Output depth is 48
+model.add(Convolution2D(48,5,5, subsample=(2,2), activation='relu'))
+# A convolution layer with 3*3 filter, stride is 1,1 Output depth is 64
+model.add(Convolution2D(64,3,3, activation='relu'))
+# A convolution layer with 3*3 filter, stride is 1,1 Output depth is 64
+model.add(Convolution2D(64,3,3, activation='relu'))
 model.add(Flatten())
-
+model.add(Dropout(0.2))    
 # A fully connected layer followed by a relu activation function
-model.add(Dense(120, activation="relu"))
-
-# A dropout layer prevents overfitting
-model.add(Dropout(0.2))
-
+model.add(Dense(100))
 # A fully connected layer followed by a relu activation function
-model.add(Dense(84, activation="relu"))
-
-# A fully connected layer without activation function
+model.add(Dense(64))
+# A fully connected layer followed by a relu activation function
+model.add(Dense(16))
+# A fully connected layer followed by a relu activation function
 model.add(Dense(1))
-
+    
 # An Adam Optimizer closes the pipeline using mean square error
 model.compile(loss='mse', optimizer='adam')
 
 # Train the model. 
 model.fit_generator(train_generator, 
-                    steps_per_epoch=math.ceil(len(train_lines)/batch_size),
+                    steps_per_epoch=math.ceil(6 * len(train_lines)/batch_size) - 1,
                     validation_data=valid_generator,
-                    validation_steps=math.ceil(len(valid_lines)/batch_size),
+                    validation_steps=math.ceil(6 * len(valid_lines)/batch_size) - 1,
                     epochs=epoch_number,
                     verbose=1)
                    
